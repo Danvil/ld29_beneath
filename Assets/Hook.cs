@@ -4,7 +4,7 @@ using System.Collections;
 [RequireComponent (typeof (TubeRenderer))]
 public class Hook : MonoBehaviour {
 
-	public float winchSpeed = 0.5f;
+	public float winchSpeed = 5.0f;
 	public float ropeLength = 3.0f;
 	public float ropeRadius = 0.03f;
 
@@ -25,35 +25,26 @@ public class Hook : MonoBehaviour {
 	void Start () {
 	}
 
-	public void WinchUp() {
-		spring.maxDistance = Mathf.Max(spring.maxDistance - winchSpeed*Time.deltaTime, 0.0f);
+	public void WinchUpDown(float a) {
+		spring.maxDistance = Mathf.Min(Mathf.Max(spring.maxDistance + winchSpeed*a, 0.0f), ropeLength);
 	}
 
-	public void WinchDown() {
-		spring.maxDistance = Mathf.Min(spring.maxDistance + winchSpeed*Time.deltaTime, ropeLength);
-	}
-
-	Vector3 Begin {
-		get { return Vector3.zero; }
-	}
-	
-	Vector3 End {
-		get { return this.end.transform.localPosition; }
-	}
-
-	void MoveEnd(Vector3 d) {
-		this.end.transform.localPosition += d;
+	public void Grap() {
+		Collider[] colliders = Physics.OverlapSphere(this.end.transform.position, 0.1f);
+		if(colliders.Length > 0) {
+			Debug.Log(colliders);
+		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetKey(KeyCode.R)) {
-			WinchUp();
-		}
-		if(Input.GetKey(KeyCode.F)) {
-			WinchDown();
-		}
-		rope[SEGMENTS-1] = End;
+		WinchUpDown(Input.GetAxis("Mouse ScrollWheel"));
+		rope[SEGMENTS-1] = this.end.transform.localPosition;
 		tube.SetPoints(rope, ropeRadius, Color.white);
+	}
+
+	void OnDrawGizmos() {
+		Gizmos.color = Color.red;
+		Gizmos.DrawWireSphere(this.end.transform.position, 0.1f);
 	}
 }
