@@ -28,9 +28,9 @@ public class HookGrap : MonoBehaviour {
 	}
 
 	void OnTriggerStay(Collider other) {
-		Debug.Log(other);
-		Debug.Log(other.gameObject.layer);
-		Debug.Log(this.gameObject.layer);
+//		Debug.Log(other);
+//		Debug.Log(other.gameObject.layer);
+//		Debug.Log(this.gameObject.layer);
 		if(other.gameObject.layer == this.gameObject.layer) {
 			if(this.currentDeadTime < 0 &&!this.HasConnectedBody && Input.GetKey(KeyCode.F)) {
 				this.currentDeadTime = deadTime;

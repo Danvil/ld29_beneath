@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class SwarmScript : MonoBehaviour {
+public class Swarm : MonoBehaviour {
 
 	public GameObject pfFish;
 	public int count = 20;
@@ -17,11 +17,17 @@ public class SwarmScript : MonoBehaviour {
 	List<GameObject> fishy = new List<GameObject>();
 
 	void GenerateSwarm() {
-		ai = new AI.SwarmCircle() {
-			Center = new Vector3(0,3,0),
-			Radius = 2.0f,
-			Velocity = 1.0f
+//		ai = new AI.SwarmCircle() {
+//			Center = new Vector3(0,3,0),
+//			Radius = 2.0f,
+//			Velocity = 1.0f
+//		};
+		ai = new AI.SwarmRandom() {
+			AreaCenter = new Vector3(0,3,0),
+			AreaRadius = 7.0f,
+			AreaHeight = 2.0f
 		};
+		ai.Swarm = this;
 		for(int i=0; i<count; i++) {
 			GameObject go = (GameObject)Instantiate(pfFish);
 			fishy.Add(go);
@@ -37,6 +43,15 @@ public class SwarmScript : MonoBehaviour {
 
 	Vector3 ComputeFishDirection(GameObject go) {
 		return go.transform.TransformDirection(Vector3.right);
+	}
+
+	public float DistanceToNearest(Vector3 p) {
+		float dbest = float.MaxValue;
+		foreach(GameObject a in fishy) {
+			float d = (a.transform.position - p).magnitude;
+			dbest = Mathf.Min(dbest, d);
+		}
+		return dbest;
 	}
 
 	// Update is called once per frame

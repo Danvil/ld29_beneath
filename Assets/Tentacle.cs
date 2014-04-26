@@ -5,6 +5,8 @@ public class Tentacle : MonoBehaviour {
 
 	public GameObject[] links;
 
+	public float positionForce = 100.0f;
+
 	public AI.TentacleIntelligence ai;
 
 	public GameObject Base {
@@ -16,31 +18,38 @@ public class Tentacle : MonoBehaviour {
 	}
 
 	public float LengthMax {
-		get { return 13.75f; }
+		get { return 2.74f; }
 	}
 
 	// Use this for initialization
 	void Start () {
-		var followai = new AI.TentacleFollow();
-		followai.Tentacle = this;
-		followai.Target = Endeffector.transform;
-		ai = followai;
+//		var followai = new AI.TentacleFollow(this);
+//		followai.Target = Endeffector.transform;
+//		ai = followai;
+		ai = new AI.TentacleTouchy(this);
 	}
-	
+
+	AI.TentacleEndeffector lastPose;
+
 	// Update is called once per frame
 	void Update () {
-		ApplyPose(ai.Pose(Time.time));
+		lastPose = ai.Pose();
+	}
+
+	void FixedUpdate() {
+		ApplyPose(lastPose);
 	}
 
 	void ApplyPose(AI.TentacleEndeffector pose) {
-		Endeffector.transform.position = pose.position;
+		Endeffector.rigidbody.AddForce(positionForce*(pose.position - Endeffector.transform.position));
 		Endeffector.transform.rotation = Quaternion.FromToRotation(new Vector3(0,1,0), -pose.normal);
 	}
 
 	void OnDrawGizmos() {
+		Gizmos.color = Color.red;
+		Gizmos.DrawWireSphere(Base.transform.position, LengthMax);
 		if(ai == null) return;
 		Gizmos.color = Color.red;
-		var pose = ai.Pose(Time.time);
-		Gizmos.DrawLine(pose.position, pose.position + pose.normal);
+		Gizmos.DrawLine(lastPose.position, lastPose.position + lastPose.normal);
 	}
 }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public static class Tools
 {
@@ -10,7 +11,17 @@ public static class Tools
 		else {
 			return a/q;
 		}
-	}	
+	}
+	
+	static System.Random rnd = new System.Random();
 
+	public static T RandomElement<T>(this T[] array) {
+		return array[rnd.Next(array.Length)];
+	}
+
+	public static T RandomElement<T>(this List<T> list) {
+		return list[rnd.Next(list.Count)];
+	}
+	
 }
 

@@ -17,18 +17,17 @@ public class OceanFloor : MonoBehaviour {
 	}
 
 	void GenerateOceanFloor () {
-		System.Random rnd = new System.Random();
 		const int SPACING = 4;
 		// row near
 		for(int i=-2; i<12; i++) {
-			GameObject pf = Tiles[rnd.Next(Tiles.Count)];
+			GameObject pf = Tiles.RandomElement();
 			GameObject go = (GameObject)Instantiate(pf);
 			go.transform.position = new Vector3(SPACING*i,0,0);
 			go.transform.parent = this.transform;
 		}
 		// row far
 		for(int i=-2; i<12; i++) {
-			GameObject pf = Tiles[rnd.Next(Tiles.Count)];
+			GameObject pf = Tiles.RandomElement();
 			GameObject go = (GameObject)Instantiate(pf);
 			go.transform.position = new Vector3(SPACING*i,0,10);
 			go.transform.parent = this.transform;
