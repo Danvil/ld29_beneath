@@ -10,6 +10,8 @@ public class Hook : MonoBehaviour {
 
 	public GameObject end;
 
+	public HookGrap Grapple { get; private set; }
+
 	const int SEGMENTS = 2;
 	private Vector3[] rope = new Vector3[SEGMENTS];
 	TubeRenderer tube;
@@ -23,6 +25,13 @@ public class Hook : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		Grapple = end.GetComponent<HookGrap>();
+	}
+
+	public bool IsWinchUp {
+		get {
+			return spring.maxDistance <= 0.0f;
+		}
 	}
 
 	public void WinchUpDown(float a) {

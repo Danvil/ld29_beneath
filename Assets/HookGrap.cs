@@ -9,11 +9,16 @@ public class HookGrap : MonoBehaviour {
 	
 	FixedJoint joint;
 
-	GameObject connectedBody;
+	public GameObject ConnectedBody { get; private set; }
 
-	bool HasConnectedBody { get { return this.connectedBody; } }
+	public bool HasConnectedBody { get { return this.ConnectedBody; } }
 
-	Light connectLight;	
+	Light connectLight;
+
+	public void Unlink() {
+		Destroy(this.joint);
+		this.ConnectedBody = null;
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -31,8 +36,7 @@ public class HookGrap : MonoBehaviour {
 		this.currentDeadTime -= Time.deltaTime;
 		if(this.currentDeadTime < 0 && this.HasConnectedBody && Input.GetKey(KeyCode.F)) {
 			this.currentDeadTime = deadTime;
-			Destroy(this.joint);
-			this.connectedBody = null;
+			Unlink();
 		}
 		SetColor();
 	}
@@ -44,8 +48,8 @@ public class HookGrap : MonoBehaviour {
 		if(other.gameObject.layer == this.gameObject.layer) {
 			if(this.currentDeadTime < 0 &&!this.HasConnectedBody && Input.GetKey(KeyCode.F)) {
 				this.currentDeadTime = deadTime;
-				this.connectedBody = other.gameObject;
-				this.joint = this.connectedBody.AddComponent<FixedJoint>();
+				this.ConnectedBody = other.gameObject;
+				this.joint = this.ConnectedBody.AddComponent<FixedJoint>();
 				this.joint.connectedBody = this.rigidbody;
 			}
 		}
