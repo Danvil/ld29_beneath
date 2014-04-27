@@ -28,7 +28,7 @@ public class HookGrap : MonoBehaviour {
 	void SetColor() {
 		Color color = HasConnectedBody ? Color.red : Color.green;
 		this.connectLight.color = color;
-		this.renderer.material.color = color;
+//		this.renderer.material.color = color;
 	}
 	
 	// Update is called once per frame

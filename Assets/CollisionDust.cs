@@ -21,15 +21,24 @@ public class CollisionDust : MonoBehaviour {
 		if(!pfDustFx) {
 			return;
 		}
+		if(Time.time < 5.0f) {
+			return;
+		}
+		if(currentCooldown > 0 || collisionInfo.contacts.Length == 0) {
+			return;
+		}
+		// check if visible
+		Vector2 cp = Camera.Singleton.camera.WorldToViewportPoint(this.transform.position);
+		if(!(0 <= cp.x && cp.x <= 1 && 0 <= cp.y && cp.y <= 1)) {
+			return;
+		}
 //		foreach (ContactPoint contact in collisionInfo.contacts) {
 //			Debug.DrawRay(contact.point, contact.normal, Color.white);
 //		}
-		if(currentCooldown <= 0 && collisionInfo.contacts.Length > 0) {
-			this.currentCooldown = this.cooldown;
-			GameObject go = (GameObject)Instantiate(pfDustFx);
-			go.transform.position = collisionInfo.contacts[0].point;
-			go.transform.parent = this.transform;
-			Destroy(go, 10.0f);
-		}
+		this.currentCooldown = this.cooldown;
+		GameObject go = (GameObject)Instantiate(pfDustFx);
+		go.transform.position = collisionInfo.contacts[0].point;
+		go.transform.parent = this.transform;
+		Destroy(go, go.particleSystem.duration);
 	}
 }

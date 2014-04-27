@@ -6,9 +6,12 @@ public class World : MonoBehaviour {
 	public GameObject pfFish;
 	public GameObject pfTreasure;
 	public GameObject pfBoulder;
+	public GameObject pfBoulderEnv;
 	public GameObject pfOceanFloor;
 	public GameObject pfWeed;
 	public GameObject pfTentacle;
+
+	public GameObject pfBlackCloud;
 
 	public int weedCount = 50;
 	public int fishCount = 10;
@@ -16,6 +19,7 @@ public class World : MonoBehaviour {
 	public int treasureCount = 50;
 	public int boulderGameCount = 50;
 	public int tentacleCount = 5;
+	public float blackCloudRate = 0.7f;
 
 	Vector3 RandomWeedPos() {
 		return OceanFloor.Singleton.RandomInArea();
@@ -24,7 +28,7 @@ public class World : MonoBehaviour {
 	Vector3 RandomScatterBoulderPos() {
 		do {
 			Vector3 p = OceanFloor.Singleton.RandomInArea();
-			if(Mathf.Abs(p.z) > 3) return p;
+			if(Mathf.Abs(p.z) > 3.5f) return p;
 		} while(true);
 	}
 	
@@ -40,10 +44,14 @@ public class World : MonoBehaviour {
 	}
 
 	Vector3 RandomGameBoulderPos() {
-		Vector3 p = OceanFloor.Singleton.RandomInArea();
-		p.z = 0.0f;
-		p.y = OceanFloor.Singleton.GetHeight(p.x);
-		return p;
+		do {
+			Vector3 p = OceanFloor.Singleton.RandomInArea();
+			if(p.x > 4.5f) {
+				p.z = 0.0f;
+				p.y = OceanFloor.Singleton.GetHeight(p.x);
+				return p;
+			}
+		} while(true);
 	}
 	
 	Vector3 RandomTentaclePos() {
@@ -66,6 +74,7 @@ public class World : MonoBehaviour {
 			GameObject go = (GameObject)Instantiate(pfFish);
 			Swarm w = go.GetComponent<Swarm>();
 			w.ai.AreaCenter = p;
+			go.transform.parent = this.transform;
 		}
 		// fish
 		for(int i=0; i<weedCount; i++) {
@@ -77,11 +86,12 @@ public class World : MonoBehaviour {
 		// environment boulders
 		for(int i=0; i<boulderScatterCount; i++) {
 			Vector3 p = RandomScatterBoulderPos();
-			GameObject go = (GameObject)Instantiate(pfBoulder);
+			GameObject go = (GameObject)Instantiate(pfBoulderEnv);
 			float vscl = (0.5f + 1.5f*Random.value);
 			go.transform.localScale *= vscl;
 			go.transform.position = p + new Vector3(0,1.0f,0);
 			go.rigidbody.mass *= vscl;
+			go.transform.parent = this.transform;
 		}
 		// treasure
 		for(int i=0; i<treasureCount; i++) {
@@ -124,5 +134,15 @@ public class World : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if(Random.value < blackCloudRate*Time.deltaTime) {
+			GameObject go = (GameObject)Instantiate(pfBlackCloud);
+			Vector3 p = Vector3.zero;
+			while(p.z > 3.0f) {
+				p = OceanFloor.Singleton.RandomInArea() + new Vector3(0,0.7f,0);
+			}
+			go.transform.position = p;
+			go.transform.parent = this.transform;
+			Destroy(go, go.particleSystem.duration + 0.1f);
+		}
 	}
 }

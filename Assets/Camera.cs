@@ -3,9 +3,15 @@ using System.Collections;
 
 public class Camera : MonoBehaviour {
 
+	public static Camera Singleton;
+
 	public SubmarineMove target;
 	public float lead = 1.0f;
 	public float lerpMult = 1.0f;
+
+	void Awake() {
+		Singleton = this;
+	}
 
 	// Use this for initialization
 	void Start () {
