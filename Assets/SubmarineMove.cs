@@ -3,11 +3,12 @@ using System.Collections;
 
 public class SubmarineMove : MonoBehaviour {
 
-	const float BackwardsPenalty = 0.35f;
-	const float AccelerationXMax = 1.85f;
-	const float VelocityXMaxBackwards = 0.65f;
-	const float VelocityXMax = 0.95f;
-	const float VelocityYMax = 0.45f;
+	public float BackwardsPenalty = 0.35f;
+	public float AccelerationXMax = 1.85f;
+	public float AccelerationYMax = 1.85f;
+	public float VelocityXMaxBackwards = 0.65f;
+	public float VelocityXMax = 0.95f;
+	public float VelocityYMax = 0.45f;
 
 	float targetY;
 
@@ -17,6 +18,8 @@ public class SubmarineMove : MonoBehaviour {
 	void Start () {
 		targetY = this.transform.position.y;
 	}
+
+	Vector3 force;
 	
 	// Update is called once per frame
 	void Update () {
@@ -34,6 +37,15 @@ public class SubmarineMove : MonoBehaviour {
 		float py = targetY
 				+ 0.07f*Mathf.Sin(Time.time/3.74f*2*Mathf.PI)
 				+ 0.03f*Time.deltaTime*(-1.0f+2.0f*Random.value);
-		this.transform.position = new Vector3(px,py,0);
+		//this.transform.position = new Vector3(px,py,0);
+		force = new Vector3(
+			AccelerationXMax*inpx,
+			AccelerationYMax*inpy + (py-targetY),
+			0.0f
+		);
+	}
+
+	void FixedUpdate() {
+		this.rigidbody.AddForce(500.0f*force);
 	}
 }

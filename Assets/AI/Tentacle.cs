@@ -83,6 +83,7 @@ namespace AI
 
 		GameObject current;
 		float touchtime;
+		float notinrangetime;
 
 		TentacleEndeffector endeffector;
 		
@@ -112,7 +113,11 @@ namespace AI
 			else {
 				current = colliders.RandomElement().gameObject;
 			}
+			if(Random.value >= 0.6) {
+				current = null;
+			}
 			touchtime = 2.0f + Random.value*2.0f;
+			notinrangetime = 4.7f;
 		}
 
 		void SmoothIn(TentacleEndeffector target) {
@@ -129,7 +134,7 @@ namespace AI
 		#region Intelligence implementation
 		public override TentacleEndeffector Pose ()
 		{
-			if(current == null || touchtime <= 0) {
+			if(current == null || touchtime <= 0 || notinrangetime <= 0.0f) {
 				Retarget();
 			}
 			if(current == null) {
@@ -146,6 +151,9 @@ namespace AI
 				bool touching = (Tentacle.Endeffector.transform.position - current.transform.position).magnitude < 0.3f;
 				if(touching) {
 					touchtime -= Time.deltaTime;
+				}
+				else {
+					notinrangetime -= Time.deltaTime;
 				}
 			}
 
