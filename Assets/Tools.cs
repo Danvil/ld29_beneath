@@ -22,6 +22,12 @@ public static class Tools
 	public static T RandomElement<T>(this List<T> list) {
 		return list[rnd.Next(list.Count)];
 	}
+
+	public static Vector2 NormalSample2() {
+		float q = Mathf.Sqrt(-2.0f*Mathf.Log(Random.value));
+		float a = 2.0f*Mathf.PI*Random.value;
+		return q * new Vector2(Mathf.Cos(a), Mathf.Sin(a));
+	}
 	
 }
 

@@ -7,7 +7,7 @@ public class Globals
 
 	public static int Score {
 		get {
-			if(LastGameHull == 0) {
+			if(LastGameHull == 0 || LastGameOxygen == 0) {
 				return 0;
 			}
 			else {

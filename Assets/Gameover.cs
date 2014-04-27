@@ -8,7 +8,15 @@ public class Gameover : MonoBehaviour {
 		int score = Globals.Score;
 		int gold = Globals.LastGameGold;
 		if(score == 0) {
-			this.guiText.text = "Game over!\n\nPress 'F' to return to menu";
+			if(Globals.LastGameHull == 0) {
+				this.guiText.text = "Ship destroyed!\n\nPress 'F' to return to menu";
+			}
+			else if(Globals.LastGameOxygen == 0) {
+				this.guiText.text = "You suffocated!\n\nPress 'F' to return to menu";
+			}
+			else {
+				this.guiText.text = "Game over!\n\nPress 'F' to return to menu";
+			}
 		}
 		else if(gold > 0) {
 			this.guiText.text = string.Format("You found TREASURE!\nScore: {0}\n\nPress 'F' to return to menu", score);

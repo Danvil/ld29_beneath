@@ -10,6 +10,11 @@ public class SubmarineMove : MonoBehaviour {
 	public float VelocityXMax = 0.95f;
 	public float VelocityYMax = 0.45f;
 
+	public float Force = 1000.0f;
+	public float VelocityMax = 2.0f;
+
+	public float heightMax = 5.2f;
+
 	float targetY;
 
 	public float VelocityX { get; private set; }
@@ -46,6 +51,13 @@ public class SubmarineMove : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
-		this.rigidbody.AddForce(500.0f*force);
+		this.rigidbody.AddForce(Force*force);
+		if(rigidbody.velocity.magnitude > VelocityMax)
+		{
+			rigidbody.velocity = rigidbody.velocity.normalized * VelocityMax;
+		}
+		if(rigidbody.position.y > heightMax) {
+			rigidbody.transform.position = new Vector3(rigidbody.transform.position.x, heightMax, rigidbody.transform.position.z);
+		}
 	}
 }

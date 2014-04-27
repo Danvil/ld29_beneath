@@ -4,17 +4,23 @@ using System.Collections.Generic;
 
 public class OceanFloor : MonoBehaviour {
 
+	static public OceanFloor Singleton;
+
 	public List<GameObject> Tiles;
-	const float FLOOR_X1 = -8;
-	const float FLOOR_X2 = 12*4;
-	const float FLOOR_Y1 = -6;
-	const float FLOOR_Y2 = 12;
+	public const float FLOOR_X1 = -8;
+	public const float FLOOR_X2 = 12*4;
+	public const float FLOOR_Y1 = -6;
+	public const float FLOOR_Y2 = 12;
 	const float RESOLUTION = 0.25f;
 	const int OCEAN_FLOOR_MASK = 1<<9;
 
+	void Awake() {
+		Singleton = this;
+		GeneratePerlin();
+	}
+
 	// Use this for initialization
 	void Start () {
-		GeneratePerlin();
 	}
 	
 	// Update is called once per frame
@@ -23,13 +29,20 @@ public class OceanFloor : MonoBehaviour {
 	}
 
 	public float GetHeight(float x) {
+		return GetHeight(x,0);
+	}
+
+	public float GetHeight(float x, float y) {
 		RaycastHit hinfo;
-		Physics.Raycast(
-			new Vector3(x,-20,0),
-			new Vector3(x,-1,0),
+		bool hit = Physics.Raycast(
+			new Vector3(x,20,y),
+			new Vector3(0,-1,0),
 			out hinfo,
-			40,
+			Mathf.Infinity,
 			OCEAN_FLOOR_MASK);
+		if(!hit) {
+			Debug.Log("NO HIT FOR GROUND");
+		}
 		return hinfo.point.y;
 	}
 

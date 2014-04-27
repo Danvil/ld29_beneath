@@ -3,7 +3,8 @@ using System.Collections;
 
 public class SubmarineState : MonoBehaviour {
 
-	public float emergeHeight = 5.21f;
+	public float emergeHeight = 4.51f;
+	public float emergeTimer = 3.5f;
 
 	public float Hull { get; private set; }
 	public float Oxygen { get; private set; }
@@ -15,7 +16,7 @@ public class SubmarineState : MonoBehaviour {
 	void Start () {
 		hook = this.transform.Find("Hook").GetComponent<Hook>();
 		Hull = 100;
-		Oxygen = 100;
+		Oxygen = 1000;
 		Gold = 0;
 	}
 
@@ -29,6 +30,8 @@ public class SubmarineState : MonoBehaviour {
 		}
 		return 0;
 	}
+
+	float emergetime = 0.0f;
 	
 	// Update is called once per frame
 	void Update () {
@@ -45,10 +48,18 @@ public class SubmarineState : MonoBehaviour {
 		}
 		// check if go up
 		if(this.transform.position.y > emergeHeight) {
-			Globals.LastGameHull = (int)Hull;
-			Globals.LastGameOxygen = (int)Oxygen;
-			Globals.LastGameGold = Gold + GetTreasureOnTheHook();
-			Application.LoadLevel("gameover");
+			emergetime -= Time.deltaTime;
+			if(emergetime <= 0.0f) {
+				Globals.LastGameHull = (int)Hull;
+				Globals.LastGameOxygen = (int)Oxygen;
+				Globals.LastGameGold = Gold + GetTreasureOnTheHook();
+				Application.LoadLevel("gameover");
+			}
+			GUI.Singleton.EnableEmerge(emergetime);
+		}
+		else {
+			emergetime = emergeTimer;
+			GUI.Singleton.DisableEmerge();
 		}
 		// deplete oxygen
 		Oxygen -= Time.deltaTime;

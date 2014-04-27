@@ -13,7 +13,10 @@ class BlenderAssetProcessor extends AssetPostprocessor {
 		//only perform corrections with blender files
 		var importer : ModelImporter = assetImporter as ModelImporter;
 		if (Path.GetExtension(importer.assetPath) == ".blend") {
-			RotateObject(object.transform);
+			var trunk = Path.GetFileNameWithoutExtension(importer.assetPath);
+			if(trunk != "weed") {
+				RotateObject(object.transform);
+				}
 		}
 		
 		//Don't know why we need this...
