@@ -1,6 +1,7 @@
 
 public class Globals
 {
+	public static int Highscore = 0;
 	public static int LastGameHull = 0;
 	public static int LastGameOxygen = 0;
 	public static int LastGameGold = 0;

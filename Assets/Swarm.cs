@@ -12,9 +12,18 @@ public class Swarm : MonoBehaviour {
 	public float randomFactor = 0.26f;
 	public float swimSpeedDist = 0.3f;
 
-	public AI.SwarmIntelligence ai;
+	public AI.SwarmRandom ai;
 
 	List<GameObject> fishy = new List<GameObject>();
+
+	Swarm() {
+		ai = new AI.SwarmRandom() {
+			AreaCenter = new Vector3(0,3,0),
+			AreaRadius = 7.0f,
+			AreaHeight = 2.0f
+		};
+		ai.Swarm = this;
+	}
 
 	void GenerateSwarm() {
 //		ai = new AI.SwarmCircle() {
@@ -22,16 +31,10 @@ public class Swarm : MonoBehaviour {
 //			Radius = 2.0f,
 //			Velocity = 1.0f
 //		};
-		ai = new AI.SwarmRandom() {
-			AreaCenter = new Vector3(0,3,0),
-			AreaRadius = 7.0f,
-			AreaHeight = 2.0f
-		};
-		ai.Swarm = this;
 		for(int i=0; i<count; i++) {
 			GameObject go = (GameObject)Instantiate(pfFish);
 			fishy.Add(go);
-			go.transform.position = Random.insideUnitSphere;
+			go.transform.position = ai.AreaCenter + Random.insideUnitSphere;
 			go.transform.parent = this.transform;
 		}
 	}

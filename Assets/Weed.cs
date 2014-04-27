@@ -15,6 +15,7 @@ public class Weed : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		ai = new AI.WeedGauss();
+//		ai = new AI.WeedUniformRect();
 		UpdateMesh();
 	}
 
@@ -52,7 +53,7 @@ public class Weed : MonoBehaviour {
 	void GrowWeed() {
 		var locs = ai.Generate();
 		foreach(Vector2 p in locs) {
-			float h = OceanFloor.Singleton.GetHeight(p.x,p.y);
+			float h = OceanFloor.Singleton.GetHeight(this.transform.position.x + p.x, this.transform.position.z + p.y);
 			GrowWeed(new Vector3(p.x, h, p.y));
 		}
 	}
@@ -68,7 +69,7 @@ public class Weed : MonoBehaviour {
 		return mesh;
 	}
 
-	void UpdateMesh() {
+	public void UpdateMesh() {
 		Mesh mesh = CreateWeedMesh();
 		Debug.Log(mesh);
 		var meshFilter = GetComponent<MeshFilter>();

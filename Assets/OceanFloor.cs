@@ -7,11 +7,11 @@ public class OceanFloor : MonoBehaviour {
 	static public OceanFloor Singleton;
 
 	public List<GameObject> Tiles;
-	public const float FLOOR_X1 = -8;
-	public const float FLOOR_X2 = 12*4;
-	public const float FLOOR_Y1 = -6;
-	public const float FLOOR_Y2 = 12;
-	const float RESOLUTION = 0.25f;
+	public float FLOOR_X1 = -8;
+	public float FLOOR_X2 = 12*4;
+	public float FLOOR_Y1 = -6;
+	public float FLOOR_Y2 = 12;
+	public float RESOLUTION = 0.5f;
 	const int OCEAN_FLOOR_MASK = 1<<9;
 
 	void Awake() {
@@ -26,6 +26,14 @@ public class OceanFloor : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
+	}
+
+	public Vector3 RandomInArea() {
+		Vector2 p = new Vector2(
+			FLOOR_X1 + (FLOOR_X2-FLOOR_X1)*Random.value,
+			FLOOR_Y1 + (FLOOR_Y2-FLOOR_Y1)*Random.value
+		);
+		return new Vector3(p.x, GetHeight(p.x, p.y), p.y);
 	}
 
 	public float GetHeight(float x) {
@@ -55,7 +63,7 @@ public class OceanFloor : MonoBehaviour {
 		for(int j=0; j<M; j++) {
 			for(int i=0; i<N; i++) {
 				float h = height[j,i];
-				vertices[i*M + j] = new Vector3(FLOOR_X1+j,h,FLOOR_Y1+i);
+				vertices[i*M + j] = new Vector3(FLOOR_X1+RESOLUTION*j,h,FLOOR_Y1+RESOLUTION*i);
 			}
 		}
 		int[] indices = new int[(M-1)*(N-1)*6];

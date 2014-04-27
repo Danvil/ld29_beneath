@@ -18,9 +18,12 @@ public class CollisionDust : MonoBehaviour {
 	}
 
 	void OnCollisionStay(Collision collisionInfo) {
-		foreach (ContactPoint contact in collisionInfo.contacts) {
-			Debug.DrawRay(contact.point, contact.normal, Color.white);
+		if(!pfDustFx) {
+			return;
 		}
+//		foreach (ContactPoint contact in collisionInfo.contacts) {
+//			Debug.DrawRay(contact.point, contact.normal, Color.white);
+//		}
 		if(currentCooldown <= 0 && collisionInfo.contacts.Length > 0) {
 			this.currentCooldown = this.cooldown;
 			GameObject go = (GameObject)Instantiate(pfDustFx);

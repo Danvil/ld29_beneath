@@ -11,8 +11,9 @@ namespace AI
 
 	public class WeedUniformRect : WeedDistribution
 	{
-		public int count = 100;
-		public Vector2 areaMin, areaMax;
+		public int count = 40;
+		public Vector2 areaMin = new Vector2(-1,-1);
+		public Vector2 areaMax = new Vector2(+1,+1);
 		
 		#region WeedDistribution implementation
 		public List<Vector2> Generate ()
@@ -33,7 +34,7 @@ namespace AI
 	{
 		public int count = 100;
 		public Vector2 center;
-		public float radius = 0.5f;
+		public float radius = 0.65f;
 
 		#region WeedDistribution implementation
 		public List<Vector2> Generate ()

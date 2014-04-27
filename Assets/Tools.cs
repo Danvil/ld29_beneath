@@ -28,6 +28,10 @@ public static class Tools
 		float a = 2.0f*Mathf.PI*Random.value;
 		return q * new Vector2(Mathf.Cos(a), Mathf.Sin(a));
 	}
+
+	public static int RandomInt(int max) {
+		return rnd.Next(max);
+	}
 	
 }
 
