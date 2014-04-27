@@ -25,6 +25,7 @@ public class CollisionDust : MonoBehaviour {
 			this.currentCooldown = this.cooldown;
 			GameObject go = (GameObject)Instantiate(pfDustFx);
 			go.transform.position = collisionInfo.contacts[0].point;
+			go.transform.parent = this.transform;
 			Destroy(go, 5.0f);
 		}
 	}

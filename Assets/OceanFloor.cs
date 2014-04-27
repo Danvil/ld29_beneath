@@ -10,6 +10,7 @@ public class OceanFloor : MonoBehaviour {
 	const float FLOOR_Y1 = -6;
 	const float FLOOR_Y2 = 12;
 	const float RESOLUTION = 0.25f;
+	const int OCEAN_FLOOR_MASK = 1<<9;
 
 	// Use this for initialization
 	void Start () {
@@ -19,6 +20,17 @@ public class OceanFloor : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
+	}
+
+	public float GetHeight(float x) {
+		RaycastHit hinfo;
+		Physics.Raycast(
+			new Vector3(x,-20,0),
+			new Vector3(x,-1,0),
+			out hinfo,
+			40,
+			OCEAN_FLOOR_MASK);
+		return hinfo.point.y;
 	}
 
 	Mesh GeneratePerlinMesh() {
@@ -36,8 +48,8 @@ public class OceanFloor : MonoBehaviour {
 		int[] indices = new int[(M-1)*(N-1)*6];
 		for(int j=0; j<M-1; j++) {
 			for(int i=0; i<N-1; i++) {
-				int a = i*(M-1) + j;
-				int k = 6*a;
+				int a = i*M + j;
+				int k = 6*(i*(M-1) + j);
 				indices[k] = a;
 				indices[k + 1] = a + 1 + M;
 				indices[k + 2] = a + 1;

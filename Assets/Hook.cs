@@ -4,8 +4,8 @@ using System.Collections;
 [RequireComponent (typeof (TubeRenderer))]
 public class Hook : MonoBehaviour {
 
-	public float winchSpeed = 5.0f;
-	public float ropeLength = 3.0f;
+	public float winchSpeed = 10.0f;
+	public float ropeLength = 4.0f;
 	public float ropeRadius = 0.03f;
 
 	public GameObject end;
@@ -35,10 +35,13 @@ public class Hook : MonoBehaviour {
 			Debug.Log(colliders);
 		}
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		WinchUpDown(Input.GetAxis("Mouse ScrollWheel"));
+		float w = 
+			- 1.0f*Input.GetAxis("Mouse ScrollWheel")
+			+ 0.041f*((Input.GetKey(KeyCode.E) ? 1 : 0) - (Input.GetKey(KeyCode.R) ? 1 : 0));
+		WinchUpDown(w);
 		rope[SEGMENTS-1] = this.end.transform.localPosition;
 		tube.SetPoints(rope, ropeRadius, Color.white);
 	}

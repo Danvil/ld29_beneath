@@ -13,8 +13,17 @@ public class HookGrap : MonoBehaviour {
 
 	bool HasConnectedBody { get { return this.connectedBody; } }
 
+	Light connectLight;	
+
 	// Use this for initialization
 	void Start () {
+		connectLight = this.transform.Find("ConnectLight").GetComponent<Light>();
+	}
+	
+	void SetColor() {
+		Color color = HasConnectedBody ? Color.red : Color.green;
+		this.connectLight.color = color;
+		this.renderer.material.color = color;
 	}
 	
 	// Update is called once per frame
@@ -25,6 +34,7 @@ public class HookGrap : MonoBehaviour {
 			Destroy(this.joint);
 			this.connectedBody = null;
 		}
+		SetColor();
 	}
 
 	void OnTriggerStay(Collider other) {
