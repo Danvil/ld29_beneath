@@ -34,7 +34,7 @@ public class HookGrap : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		this.currentDeadTime -= Time.deltaTime;
-		if(this.currentDeadTime < 0 && this.HasConnectedBody && Input.GetKey(KeyCode.F)) {
+		if(this.currentDeadTime < 0 && this.HasConnectedBody && Input.GetButton("Fire2")) {
 			this.currentDeadTime = deadTime;
 			Unlink();
 		}
@@ -46,7 +46,7 @@ public class HookGrap : MonoBehaviour {
 //		Debug.Log(other.gameObject.layer);
 //		Debug.Log(this.gameObject.layer);
 		if(other.gameObject.layer == this.gameObject.layer) {
-			if(this.currentDeadTime < 0 &&!this.HasConnectedBody && Input.GetKey(KeyCode.F)) {
+			if(this.currentDeadTime < 0 &&!this.HasConnectedBody && Input.GetButton("Fire2")) {
 				this.currentDeadTime = deadTime;
 				this.ConnectedBody = other.gameObject;
 				this.joint = this.ConnectedBody.AddComponent<FixedJoint>();

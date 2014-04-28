@@ -12,7 +12,7 @@ public class Globals
 				return 0;
 			}
 			else {
-				return 9773*LastGameGold + 10*LastGameHull + 10*LastGameOxygen;
+				return 100*LastGameGold + LastGameHull + LastGameOxygen;
 			}
 		}
 	}

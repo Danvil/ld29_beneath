@@ -17,10 +17,13 @@ public class SubmarineMove : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+		this.audio.volume = 0.75f * power;
 //		float py = targetY
 //				+ 0.07f*Mathf.Sin(Time.time/3.74f*2*Mathf.PI)
 //				+ 0.03f*Time.deltaTime*(-1.0f+2.0f*Random.value);
 	}
+
+	float power = 0.0f;
 
 	void FixedUpdate() {
 		float inpx = Input.GetAxis("Horizontal");
@@ -42,6 +45,7 @@ public class SubmarineMove : MonoBehaviour {
 		if(Mathf.Abs(fy) > ForceY) {
 			fy = Mathf.Sign(fy)*ForceY;
 		}
+		power = Mathf.Max(Mathf.Abs(vx/MaxVelocityX), Mathf.Abs(vx/MaxVelocityY));
 		this.rigidbody.AddForce(new Vector3(fx,fy,0));
 		// max height
 		if(this.transform.position.y > heightMax) {

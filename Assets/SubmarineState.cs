@@ -3,6 +3,8 @@ using System.Collections;
 
 public class SubmarineState : MonoBehaviour {
 
+	public static SubmarineState Singleton;
+
 	public float emergeHeight = 4.51f;
 	public float emergeTimer = 3.5f;
 
@@ -12,11 +14,41 @@ public class SubmarineState : MonoBehaviour {
 
 	Hook hook;
 
+	void Awake() {
+		Singleton = this;
+	}
+
+	public int HullDangerLevel {
+		get {
+			if(Hull < 10)
+				return 2;
+			if(Hull < 25)
+				return 1;
+			return 0;
+		}
+	}
+	
+	public int OxygenDangerLevel {
+		get {
+			if(Oxygen < 10)
+				return 2;
+			if(Oxygen < 25)
+				return 1;
+			return 0;
+		}
+	}
+	
+	public int DangerLevel {
+		get {
+			return Mathf.Max(HullDangerLevel, OxygenDangerLevel);
+		}
+	}
+
 	// Use this for initialization
 	void Start () {
 		hook = this.transform.Find("Hook").GetComponent<Hook>();
 		Hull = 100;
-		Oxygen = 90;
+		Oxygen = 120;
 		Gold = 0;
 	}
 
@@ -64,9 +96,5 @@ public class SubmarineState : MonoBehaviour {
 		}
 		// deplete oxygen
 		Oxygen -= Time.deltaTime;
-		// update gui
-		GUI.Singleton.Hull = Mathf.CeilToInt(Hull);
-		GUI.Singleton.Oxygen = Mathf.CeilToInt(Oxygen);
-		GUI.Singleton.Gold = Mathf.CeilToInt(Gold);
 	}
 }

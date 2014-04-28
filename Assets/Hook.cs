@@ -35,7 +35,9 @@ public class Hook : MonoBehaviour {
 	}
 
 	public void WinchUpDown(float a) {
-		spring.maxDistance = Mathf.Min(Mathf.Max(spring.maxDistance + winchSpeed*a, 0.0f), ropeLength);
+		float target = Mathf.Min(Mathf.Max(spring.maxDistance + winchSpeed*a, 0.0f), ropeLength);
+		this.audio.volume = (target != spring.maxDistance ? 0.7f : 0.0f);
+		spring.maxDistance = target;
 	}
 
 	public void Grap() {
@@ -49,7 +51,7 @@ public class Hook : MonoBehaviour {
 	void Update () {
 		float w = 
 			- 1.0f*Input.GetAxis("Mouse ScrollWheel")
-			+ 0.041f*((Input.GetKey(KeyCode.E) ? 1 : 0) - (Input.GetKey(KeyCode.R) ? 1 : 0));
+			+ 0.041f*((Input.GetButton("Fire1") ? 1 : 0) - (Input.GetButton("Fire3") ? 1 : 0));
 		WinchUpDown(w);
 		rope[SEGMENTS-1] = this.end.transform.localPosition;
 		tube.SetPoints(rope, ropeRadius, Color.white);
