@@ -11,7 +11,7 @@ public class Menu : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		this.guiText.text = "Yellow Submarine Treasure Hunt\n\nPress 'F' to start a game";
+		this.guiText.text = "Yellow Submarine Treasure Hunt\n\nPress 'F' to start a game\n\nControls:\nWASD or Arrows to MOVE\nF/G/H or Mouse Buttons to control HOOK";
 		fade.SetupFadeIn();
 	}
 

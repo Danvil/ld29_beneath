@@ -18,6 +18,11 @@ public class SubmarineState : MonoBehaviour {
 		Singleton = this;
 	}
 
+	public void DamageHull(float dmg) {
+		Hull -= dmg;
+		Hull = Mathf.Max(Hull, 0.0f);
+	}
+
 	public int HullDangerLevel {
 		get {
 			if(Hull < 10)
